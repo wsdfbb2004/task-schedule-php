@@ -1,0 +1,12 @@
+CREATE TABLE `taskResults` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `taskId` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '任务ID',
+  `type` int(20) unsigned NOT NULL DEFAULT '0' COMMENT '任务类型',
+  `func` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '回调函数',
+  `args` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '回调函数的参数 json格式',
+  `result` varchar(255) CHARACTER SET utf8 NOT NULL COMMENT '执行结果 json格式',
+  `execTimeBegin` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '任务开始执行时间',
+  `execTimeEnd` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '任务执行完成时间',
+  `scheduleExecTime` bigint(20) unsigned DEFAULT '0' COMMENT '调度器规划的执行时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=454 DEFAULT CHARSET=utf8 COLLATE=utf8_bin 
