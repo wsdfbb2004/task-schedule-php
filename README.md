@@ -53,7 +53,7 @@ function helloWorld(){
 
 
 ##### 实例化任务调度对象
-
+```
 $redisIp = '10.10.9.77';
 $redisPort = '6379';
 $redisTimeout = 2;
@@ -63,23 +63,23 @@ $scheduler = new \TaskSchedule\Core\TaskScheduler\RedisTaskSchedulerWithTransact
 $tasks = new \TaskSchedule\Core\Tasks\RedisTasks($redisClient);
 $runner = new \TaskSchedule\Core\TaskRunner($taskResult);
 $timeEvent = new \TaskSchedule\Core\TimeEvent\TimeEvent($scheduler, $tasks, $runner);
-
+```
 
 #####生产者将该任务添加到计划中。
-
+```
 $timeSpace = 2;
 $type = \TaskSchedule\Core\Tasks\TasksInterface::RUN_REPEATED;
 $func = 'helloWorld';
 
 //注意，在add任务之前，先初始化下maxTaskId。
 $timeEvent->add($timeSpace, $type, $func, $args = null);
-
+```
 
 
 #####消费者获取到任务并执行。
-
+```
 $runTimeLen = 5; 
 $timeEvent->loop($runTimeLen);
-
+```
 
 
