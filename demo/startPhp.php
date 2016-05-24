@@ -24,10 +24,11 @@ $tasks = new \TaskSchedule\Core\Tasks\PhpTasks();
 $runner = new \TaskSchedule\Core\TaskRunner();
 $timeEvent = new \TaskSchedule\Core\TimeEvent\TimeEvent($scheduler, $tasks, $runner);
 
-$timeSpace = 0.1;
+$timeSpace = 1;
 $type = \TaskSchedule\Core\Tasks\TasksInterface::RUN_REPEATED;
 $func = 'helloWorld';
-$timeEvent->add($timeSpace, $type, $func, $args = null);
+$limit = null;
+$timeEvent->add($timeSpace, $type, $limit, $func, $args = null);
 sleep(3);
 
 $timeEvent->loop(2);

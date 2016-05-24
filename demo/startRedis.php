@@ -49,9 +49,10 @@ $timeEvent = new \TaskSchedule\Core\TimeEvent\TimeEvent($scheduler, $tasks, $run
 $timeSpace = 2;
 $type = \TaskSchedule\Core\Tasks\TasksInterface::RUN_REPEATED;
 $func = 'helloWorld';
+$limit = null;
 
 //注意，在add任务之前，先初始化下maxTaskId。
-//$timeEvent->add($timeSpace, $type, $func, $args = null);
+$timeEvent->add($timeSpace, $type, $limit, $func, $args = null);
 //exit;
 
 sleep(3);

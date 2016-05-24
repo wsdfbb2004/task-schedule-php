@@ -31,7 +31,7 @@ class PhpTaskScheduler implements TaskSchedulerInterface
     public function __construct()
     {
         logDebug('enter phpTaskScheduler::__construct ');
-        $this->_queque = $this->_init();
+        $this->_queque = $this->_initQueque();
     }
     
     
@@ -53,7 +53,7 @@ class PhpTaskScheduler implements TaskSchedulerInterface
     }
     
     
-    public function extractTop()
+    public function extractTop($timeout = null)
     {
         logDebug('enter phpTaskScheduler::extractTop ');
         $top = $this->_queque->extract();
@@ -65,8 +65,8 @@ class PhpTaskScheduler implements TaskSchedulerInterface
     
     public function clearAll()
     {
-        $this->_queque = $this->_initQueque();
-        if($this->_queque){
+        $this->_queque = $newQueque = $this->_initQueque();
+        if($newQueque){
             $ret = true;
         }
         else{
@@ -81,6 +81,9 @@ class PhpTaskScheduler implements TaskSchedulerInterface
     {
         logDebug('enter phpTaskScheduler::del ', $taskId);
         $newQueque = $this->_initQueque();
+        if(!$newQueque){
+            return false;
+        }
         while(($top = $this->_queque->extract()) && !empty($top)){
             if($top['data'] != $taskId){
                 $newQueque->insert($top['data'], $top['priority']);

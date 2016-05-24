@@ -21,7 +21,7 @@ namespace TaskSchedule\Core\TaskScheduler;
 class RedisTaskSchedulerWithTransaction extends RedisTaskScheduler implements TaskSchedulerInterface
 {    
     
-    public function extractTop()
+    public function extractTop($timeout = null)
     {
         $this->_redis->watch($this->_key);
         $top = $this->_redis->zrevrange($this->_key, 0, 0, true);

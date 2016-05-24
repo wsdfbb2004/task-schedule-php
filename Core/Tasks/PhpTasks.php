@@ -38,13 +38,14 @@ class PhpTasks implements TasksInterface
     }
     
     
-    public function set($taskId, $type, $func, $args = null, $timeInterval = 2)
+    public function set($taskId, $type, $limit, $func, $args = null, $timeInterval = 2)
     {
-        $in = compact('taksId', 'type', 'func', 'args', 'timeInterval');
+        $in = compact('taksId', 'type', 'limit', 'func', 'args', 'timeInterval');
         logDebug('enter PhpTasks::set ', $in);
         $this->_contents[$taskId] = array(
             'status' => self::STATUS_READY,
             'type' => $type,
+            'limit' => $limit,
             'func' => $func,
             'args' => $args,
             'timeInterval' => $timeInterval,
@@ -65,7 +66,7 @@ class PhpTasks implements TasksInterface
             return false;
         }
         $taskContent = $this->_contents[$taskId];
-        $ret = array($taskContent['type'], $taskContent['status'], $taskContent['func'], $taskContent['args'], $taskContent['timeInterval']);
+        $ret = array($taskContent['type'], $taskContent['limit'], $taskContent['status'], $taskContent['func'], $taskContent['args'], $taskContent['timeInterval']);
         logDebug('PhpTasks::get return ', $ret);
         return $ret;
     }

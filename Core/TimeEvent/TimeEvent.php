@@ -73,9 +73,9 @@ class TimeEvent implements TimeEventInterface
      * todo:
      * 1.taskId的生成需要重新考虑，现有实现会形成单点，不利于redisTasks分布式部署。
      * */
-    public function add($time, $type, $func, $args = null)
+    public function add($time, $type, $limit, $func, $args = null)
     {
-        $in = compact('time', 'type', 'func', 'args');
+        $in = compact('time', 'type', 'limit', 'func', 'args');
         logDebug('enter TimeEvent::add ', $in);
         $timeNow = time();
         $prior = 0 - ($timeNow + $time);
@@ -86,7 +86,7 @@ class TimeEvent implements TimeEventInterface
             return false;
         }
         $taskId++;
-        $this->_tasks->set($taskId, $type, $func, $args, $time);
+        $this->_tasks->set($taskId, $type, $limit, $func, $args, $time);
         $this->_scheduler->insert($taskId, $prior);
         return true;
         
@@ -146,7 +146,7 @@ class TimeEvent implements TimeEventInterface
                 //return ;
                 continue; 
             }
-            list($type, $status, $func, $args, $timeInterval) = $ret;
+            list($type, $limit, $status, $func, $args, $timeInterval) = $ret;
             
             //如果是周期性任务，并且任务不是“伪删除”状态，将其重新加入到调度器中。
             $tasksClass = get_class($this->_tasks);
@@ -154,6 +154,19 @@ class TimeEvent implements TimeEventInterface
                 && ($tasksClass::STATUS_READY == $status)
             ){
                 $this->_scheduler->insert($taskId, (0 - $timeExec - $timeInterval));
+            }
+            elseif($tasksClass::RUN_REPEATED_LIMIT == $type)
+            {
+                if(1 >= $limit)
+                {
+                    $ret = $this->_tasks->realUnset($taskId);
+                }
+                else
+                {
+                    $limit--;
+                    $this->_scheduler->insert($taskId, (0 - $timeExec - $timeInterval));
+                    $this->_tasks->set($taskId, $type, $limit, $func, $args, $timeInterval);
+                }
             }
             elseif ($tasksClass::STATUS_READY != $status)
             {

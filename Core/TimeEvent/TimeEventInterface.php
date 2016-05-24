@@ -22,10 +22,11 @@ interface TimeEventInterface
      * 添加定时任务
      * @param int $time 期望任务将于$time秒后执行,如果是定时任务，每隔$time执行一次
      * @param int $type 任务类型，一次性任务或长期定期任务
+     * @param int $limit 如果是限制次数的周期任务，为执行任务的次数；其余case，此参数无效
      * @param str $func 任务回调函数
      * @return int $taskId 
      */
-    public function add($time, $type, $func, $args = null);
+    public function add($time, $type, $limit, $func, $args = null);
     
     /**
      * 删除定时任务

@@ -20,7 +20,7 @@ interface TasksInterface
 {    
     
     /**
-     * 周期性任务
+     * 周期性任务，重复执行无数次
      */
     const RUN_REPEATED = 1;
     
@@ -28,6 +28,11 @@ interface TasksInterface
      * 一次性性任务
      */
     const RUN_ONCE = 2;
+    
+    /**
+     * 周期性任务,但是有执行次数限制
+     */
+    const RUN_REPEATED_LIMIT = 3;
     
     /**
      * 正常等待运行状态
@@ -43,17 +48,18 @@ interface TasksInterface
      * 添加任务
      * @param int $taskId 任务ID
      * @param int $type 任务类型，一次性任务或长期定期任务
+     * @param int $limit 如果是限制次数的周期任务，为执行任务的次数；其余case，此参数无效
      * @param str $func 任务回调函数
      * @param str $args 运行参数
      * @param str $timeInterval 如果是周期性任务，为指定运行时间间隔。
      * @return bool 
      */
-    public function set($taskId, $type, $func, $args = null, $timeInterval = 2);
+    public function set($taskId, $type, $limit, $func, $args = null, $timeInterval = 2);
     
     /**
      * 获得任务内容
      * @param int $taskId
-     * @return list($type, $status, $func, $args, $timeInterval)
+     * @return list($type, $limit, $status, $func, $args, $timeInterval)
      */
     public function get($taskId);
     

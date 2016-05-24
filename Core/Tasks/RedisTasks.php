@@ -45,11 +45,12 @@ class RedisTasks implements TasksInterface
     }
     
     
-    public function set($taskId, $type, $func, $args = null, $timeInterval = 2)
+    public function set($taskId, $type, $limit, $func, $args = null, $timeInterval = 2)
     {
         $taskContent = array(
             'status' => self::STATUS_READY,
             'type' => $type,
+            'limit' => $limit,
             'func' => $func,
             'args' => $args,
             'timeInterval' => $timeInterval,
@@ -81,7 +82,7 @@ class RedisTasks implements TasksInterface
     public function get($taskId)
     {
         $taskContent = $this->_get($taskId);
-        return array($taskContent['type'], $taskContent['status'], $taskContent['func'], $taskContent['args'], $taskContent['timeInterval']);
+        return array($taskContent['type'], $taskContent['limit'], $taskContent['status'], $taskContent['func'], $taskContent['args'], $taskContent['timeInterval']);
     }
     
 

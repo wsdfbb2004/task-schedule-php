@@ -76,9 +76,10 @@ logDebug("demo startBeanstalkd, new timeEvent success");
 $timeSpace = 2;
 $type = \TaskSchedule\Core\Tasks\TasksInterface::RUN_REPEATED;
 $func = 'helloWorld';
+$limit = null;
 
 //注意，在add任务之前，先初始化下maxTaskId。
-//$timeEvent->add($timeSpace, $type, $func, $args = null);
+$timeEvent->add($timeSpace, $type, $limit, $func, $args = null);
 logDebug("demo startBeanstalkd, timeEvent add success");
 //echo 789; exit;
 
